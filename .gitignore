@@ -12,3 +12,6 @@ captures
 
 /Common/src/androidTest
 /Common/src/test
+
+/app/src/androidTest
+/app/src/test
