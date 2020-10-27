@@ -34,5 +34,6 @@ ext {
     // 相关依赖库版本
     appcompatVersion = '1.2.0'
     constraintlayoutVersion = '2.0.2'
+    recyclerviewVersion = '1.1.0'
     butterknifeVersion = '10.2.1'
 }

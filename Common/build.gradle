@@ -27,6 +27,8 @@ dependencies {
 
     api "androidx.appcompat:appcompat:$rootProject.ext.appcompatVersion"
     api "androidx.constraintlayout:constraintlayout:$rootProject.ext.constraintlayoutVersion"
+    api "androidx.recyclerview:recyclerview:$rootProject.ext.recyclerviewVersion"
+
     //ButterKnife
     api "com.jakewharton:butterknife:$rootProject.ext.butterknifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.ext.butterknifeVersion"

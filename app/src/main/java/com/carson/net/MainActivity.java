@@ -1,14 +1,10 @@
 package com.carson.net;
 
-import androidx.appcompat.app.AppCompatActivity;
+import com.carson.common.app.Activity;
 
-import android.os.Bundle;
-
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends Activity {
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    protected int getContentLayoutId() {
+        return R.layout.activity_main;
     }
 }
