@@ -36,4 +36,17 @@ ext {
     constraintlayoutVersion = '2.0.2'
     recyclerviewVersion = '1.1.0'
     butterknifeVersion = '10.2.1'
+    geniusVersion = '2.1.1'
+    glideVersion = '4.11.0'
+    circleimageviewVersion = '2.2.0'
+    ucropVersion = "2.2.0-native"
+    easyPMVersion = "0.3.0"
+    ossVersion = '2.9.1'
+
+    gsonVersion = '2.8.0'
+    retrofitVersion = '2.1.0'
+    getuiVersion = '2.13.0.0'
+    dbflowVersion = "4.0.4"
+    airpanelVersion = "1.4.0"
+    lameVersion = "1.2.0"
 }
