@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/actionBarWithStatusBarSize"
         android:elevation="@dimen/len_2"
-        android:background="@drawable/bg_src_morning"
         android:outlineProvider="bounds"
         tools:targetApi="lollipop">
 
@@ -71,7 +70,7 @@
         android:id="@+id/btn_action"
         android:layout_width="@dimen/len_52"
         android:layout_height="@dimen/len_52"
-        android:layout_marginBottom="@dimen/len_128"
+        android:layout_marginBottom="@dimen/len_68"
         android:layout_marginEnd="@dimen/len_16"
         android:padding="@dimen/len_20"
         android:src="@drawable/ic_group_add"
@@ -90,6 +89,9 @@
         android:elevation="@dimen/len_4"
         android:outlineProvider="bounds"
         android:translationZ="@dimen/len_8"
+        app:menu="@menu/navigation_items"
+        app:itemIconTint="@color/text_nav"
+        app:itemTextColor="@color/text_nav"
         tools:targetApi="lollipop" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
