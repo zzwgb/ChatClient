@@ -289,6 +289,7 @@ public class GalleryView extends RecyclerView {
 
         @Override
         protected void onBind(Image image) {
+
             Glide.with(getContext())
                     .load(image.path) // 加载路径
                     .diskCacheStrategy(DiskCacheStrategy.NONE) // 不使用缓存，直接从原图加载

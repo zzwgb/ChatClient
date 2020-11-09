@@ -18,6 +18,7 @@ import com.bumptech.glide.request.target.CustomViewTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.carson.common.app.Activity;
 import com.carson.common.widget.PortraitView;
+import com.carson.net.activities.AccountActivity;
 import com.carson.net.frags.main.ActiveFragment;
 import com.carson.net.frags.main.ContactFragment;
 import com.carson.net.frags.main.GroupFragment;
@@ -116,6 +117,7 @@ public class MainActivity extends Activity implements
 
     @OnClick(R.id.btn_action)
     void onActionClick() {
+        AccountActivity.show(this);
         // 浮动按钮点击时，判断当前界面是群还是联系人界面
         // 如果是群，则打开群创建的界面
       /*  if (Objects.equals(mNavHelper.getCurrentTab().extra, R.string.title_group)) {

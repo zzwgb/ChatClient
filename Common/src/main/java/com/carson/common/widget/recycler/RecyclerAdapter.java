@@ -1,5 +1,6 @@
 package com.carson.common.widget.recycler;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,6 +82,7 @@ public abstract class RecyclerAdapter<Data> extends
     @NonNull
     @Override
     public ViewHolder<Data> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Log.e("item----createholder", "" + viewType);
         // 得到LayoutInflater用于把XML初始化为View
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         // 把XML id为viewType的文件初始化为一个root View
