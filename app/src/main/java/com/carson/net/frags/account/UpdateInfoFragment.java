@@ -4,11 +4,14 @@ package com.carson.net.frags.account;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.util.Log;
 
 import com.bumptech.glide.Glide;
 import com.carson.common.app.Application;
 import com.carson.common.app.Fragment;
 import com.carson.common.widget.PortraitView;
+import com.carson.factory.Factory;
+import com.carson.factory.net.UploadHelper;
 import com.carson.net.R;
 import com.carson.net.frags.media.GalleryFragment;
 import com.yalantis.ucrop.UCrop;
@@ -91,6 +94,18 @@ public class UpdateInfoFragment extends Fragment {
                 .load(uri)
                 .centerCrop()
                 .into(mPortrait);
+
+        //本地文件的地址
+        final String localPath = uri.getPath();
+        Log.e("TAG", "localPath:" + localPath);
+
+        Factory.runOnAsync(new Runnable() {
+            @Override
+            public void run() {
+                String url = UploadHelper.uploadPortrait(localPath);
+                Log.e("TAG", "url:" + url);
+            }
+        });
     }
 
 }
