@@ -36,14 +36,14 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation project(path: ':Common')
+    implementation project(path: ':Factory')
     //ButterKnife
     api "com.jakewharton:butterknife:$rootProject.ext.butterknifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.ext.butterknifeVersion"
     //Ucrop图片剪裁
     implementation "com.github.yalantis:ucrop:$rootProject.ext.ucropVersion"
-
-
+    //Permission
+    implementation "pub.devrel:easypermissions:$rootProject.ext.easyPMVersion"
 
 
 }

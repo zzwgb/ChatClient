@@ -74,7 +74,7 @@ public class UpdateInfoFragment extends Fragment {
                 loadPortrait(resultUri);
             }
         } else if (resultCode == UCrop.RESULT_ERROR) {
-            //Application.showToast(R.string.data_rsp_error_unknown);
+            Application.showToast(R.string.data_rsp_error_unknown);
         }
     }
 

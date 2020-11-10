@@ -1,6 +1,8 @@
 package com.carson.net;
 
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.Menu;
@@ -19,6 +21,7 @@ import com.bumptech.glide.request.transition.Transition;
 import com.carson.common.app.Activity;
 import com.carson.common.widget.PortraitView;
 import com.carson.net.activities.AccountActivity;
+import com.carson.net.frags.assist.PermissionFragment;
 import com.carson.net.frags.main.ActiveFragment;
 import com.carson.net.frags.main.ContactFragment;
 import com.carson.net.frags.main.GroupFragment;
@@ -56,6 +59,10 @@ public class MainActivity extends Activity implements
     FloatActionButton mAction;
 
     private NavHelper<Integer> mNavHelper;
+
+    public static void show(Context context) {
+        context.startActivity(new Intent(context, MainActivity.class));
+    }
 
     @Override
     protected int getContentLayoutId() {
