@@ -9,10 +9,12 @@ public class BasePresenter<T extends BaseContract.View>
     protected T mView;
 
     public BasePresenter(T view) {
+        setView(view);
     }
 
     protected void setView(T view) {
         this.mView = view;
+        this.mView.setPresenter(this);
     }
 
     protected final T getView() {

@@ -1,4 +1,4 @@
-package com.carson.factory.account;
+package com.carson.factory.presenter.account;
 
 import androidx.annotation.StringRes;
 
