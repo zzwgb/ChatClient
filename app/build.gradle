@@ -11,6 +11,16 @@ android {
         versionCode 1
         versionName "1.0"
 
+        //个推相关参数
+        manifestPlaceholders = [
+                GETUI_APP_ID    : "iFjxSLdOTj8CAa4V0YB586",
+                GETUI_APP_KEY   : "HR4IP4Fdzc5poGROMCsmw5",
+                GETUI_APP_SECRET: "kuIuXk4MPJ7hdXTmntuyo2",
+                PACKAGE_NAME    : applicationId
+        ]
+        ndk {
+            abiFilters "x86", "x86_64", "arm64-v8a", "armeabi-v7a", 'armeabi'
+        }
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -44,6 +54,7 @@ dependencies {
     implementation "com.github.yalantis:ucrop:$rootProject.ext.ucropVersion"
     //Permission
     implementation "pub.devrel:easypermissions:$rootProject.ext.easyPMVersion"
-
+    // 个推
+    api "com.getui:sdk:$rootProject.ext.getuiVersion"
 
 }

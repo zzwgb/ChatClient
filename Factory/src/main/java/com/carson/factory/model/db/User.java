@@ -1,18 +1,54 @@
 package com.carson.factory.model.db;
 
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
 import java.util.Date;
 
 /**
  * Author: Create by Carson on 2020/11/19
  */
-public class User {
+@Table(database = AppDatabase.class)
+public class User extends BaseModel {
 
+    public static final int SEX_MAN = 1;
+    public static final int SEX_WOMAN = 2;
+
+    // 主键
+    @PrimaryKey
     private String id;
+    @Column
     private String name;
+    @Column
     private String phone;
+    @Column
     private String portrait;
+    @Column
     private String desc;
+    @Column
     private int sex = 0;
+
+    // 我对某人的备注信息，也应该写入到数据库中
+    @Column
+    private String alias;
+
+    // 用户关注人的数量
+    @Column
+    private int follows;
+    // 用户粉丝的数量
+    @Column
+    private int following;
+
+    // 我与当前User的关系状态，是否已经关注了这个人
+    @Column
+    private boolean isFollow;
+
+    // 时间字段
+    @Column
+    private Date modifyAt;
+
 
     public String getId() {
         return id;
@@ -102,17 +138,4 @@ public class User {
         this.modifyAt = modifyAt;
     }
 
-    // 我对某人的备注信息，也应该写入到数据库中
-    private String alias;
-
-    // 用户关注人的数量
-    private int follows;
-    // 用户粉丝的数量
-    private int following;
-
-    // 我与当前User的关系状态，是否已经关注了这个人
-    private boolean isFollow;
-
-    // 时间字段
-    private Date modifyAt;
 }

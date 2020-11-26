@@ -18,8 +18,36 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.UserActivity"></activity>
-        <activity android:name=".LauncherActivity">
+
+        <!--<receiver android:name=".MessageReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:label="AppMessageReceiverService"
+            android:permission="1000" >
+            <intent-filter>
+                <action android:name="com.igexin.sdk.action.${GETUI_APP_ID}"/>
+            </intent-filter>
+        </receiver>-->
+
+        <!-- 个推的Service服务,维持长链接接收消息，process 名字不可更改 -->
+        <service
+            android:name=".AppPushService"
+            android:enabled="true"
+            android:exported="true"
+            android:label="AppPushService"
+            android:permission="1000"
+            android:process=":pushservice" />
+
+        <service
+            android:name=".AppMessageReceiverService"
+            android:enabled="true"
+            android:exported="true"
+            android:label="AppMessageReceiverService"
+            android:permission="1000" />
+
+        <activity
+            android:name=".LauncherActivity"
+            android:theme="@style/AppTheme.TransStatusBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,6 +66,10 @@
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activities.UserActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Account" />
     </application>
 
 </manifest>

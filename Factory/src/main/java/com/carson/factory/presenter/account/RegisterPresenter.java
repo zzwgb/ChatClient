@@ -8,6 +8,7 @@ import com.carson.factory.data.DataSource;
 import com.carson.factory.data.helper.AccountHelper;
 import com.carson.factory.model.api.account.RegisterModel;
 import com.carson.factory.model.db.User;
+import com.carson.factory.persistence.Account;
 import com.carson.factory.presenter.BasePresenter;
 
 import net.qiujuer.genius.kit.handler.Run;
@@ -46,7 +47,7 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View>
         } else {
             // 进行网络请求
             // 构造Model，进行请求调用
-            RegisterModel model = new RegisterModel(phone, password, name);
+            RegisterModel model = new RegisterModel(phone, password, name, Account.getPushId());
             // 进行网络请求，并设置回送接口为自己
             AccountHelper.register(model, this);
         }
