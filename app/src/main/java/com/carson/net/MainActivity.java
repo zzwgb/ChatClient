@@ -4,6 +4,7 @@ package com.carson.net;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,7 +21,9 @@ import com.bumptech.glide.request.target.CustomViewTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.carson.common.app.Activity;
 import com.carson.common.widget.PortraitView;
+import com.carson.factory.persistence.Account;
 import com.carson.net.activities.AccountActivity;
+import com.carson.net.activities.UserActivity;
 import com.carson.net.frags.assist.PermissionFragment;
 import com.carson.net.frags.main.ActiveFragment;
 import com.carson.net.frags.main.ContactFragment;
@@ -63,6 +66,18 @@ public class MainActivity extends Activity implements
     public static void show(Context context) {
         context.startActivity(new Intent(context, MainActivity.class));
     }
+
+    @Override
+    protected boolean initArgs(Bundle bundle) {
+        if (Account.isComplete()) {
+            // 判断用户信息是否完全，完全则走正常流程
+            return super.initArgs(bundle);
+        } else {
+            UserActivity.show(this);
+            return false;
+        }
+    }
+
 
     @Override
     protected int getContentLayoutId() {

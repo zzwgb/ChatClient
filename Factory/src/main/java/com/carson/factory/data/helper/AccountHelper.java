@@ -81,7 +81,7 @@ public class AccountHelper {
         @Override
         public void onResponse(Call<RspModel<AccountRspModel>> call, Response<RspModel<AccountRspModel>> response) {
             RspModel<AccountRspModel> rspModel = response.body();
-            if (rspModel.success()) { //请求成功返回
+            if (rspModel != null && rspModel.success()) { //请求成功返回
                 //拿到实体
                 AccountRspModel accountRspModel = rspModel.getResult();
                 User user = accountRspModel.getUser();
