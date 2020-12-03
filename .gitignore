@@ -15,3 +15,5 @@ captures
 
 /app/src/androidTest
 /app/src/test
+
+/Factory/src/main/java/com/carson/factory/net/UploadHelper.java
