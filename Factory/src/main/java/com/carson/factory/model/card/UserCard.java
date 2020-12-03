@@ -15,8 +15,8 @@ public class UserCard {
     private String desc;
     private int sex = 0;
 
-    // 用户关注人的数量
     private int follows;
+    // 用户关注人的数量
 
     // 用户粉丝的数量
     private int following;

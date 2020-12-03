@@ -23,13 +23,13 @@ public class UploadHelper {
     // 与你们的存储区域有关系
     public static final String ENDPOINT = "http://oss-cn-guangzhou.aliyuncs.com";
     // 上传的仓库名
-    private static final String BUCKET_NAME = "carson-italker";
+    private static final String BUCKET_NAME = "carson-italker2";
 
     private static OSS getClient() {
         // 明文设置secret的方式建议只在测试时使用，更多鉴权模式请参考后面的`访问控制`章节
         // https://help.aliyun.com/document_detail/32046.html?spm=a2c4g.11186623.6.900.2ff87ca2WzupMX
         OSSCredentialProvider credentialProvider = new OSSPlainTextAKSKCredentialProvider(
-                "LTAI4G86KB321EVypxvrtxxc", "nO81UG4tAux894csOBVD3912p09jcO");
+                "LTAI4GHmwhdswdoME8UJiyvR", "uIuYzmmIPrnCeAJOaYk6V3Kk4x7gzn");
         return new OSSClient(Factory.app(), ENDPOINT, credentialProvider);
     }
 

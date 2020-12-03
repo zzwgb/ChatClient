@@ -18,8 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <!--<receiver android:name=".MessageReceiver"
+        <!--
+        <receiver android:name=".MessageReceiver"
             android:enabled="true"
             android:exported="true"
             android:label="AppMessageReceiverService"
@@ -27,8 +27,8 @@
             <intent-filter>
                 <action android:name="com.igexin.sdk.action.${GETUI_APP_ID}"/>
             </intent-filter>
-        </receiver>-->
-
+        </receiver>
+        -->
         <!-- 个推的Service服务,维持长链接接收消息，process 名字不可更改 -->
         <service
             android:name=".AppPushService"
@@ -37,7 +37,6 @@
             android:label="AppPushService"
             android:permission="1000"
             android:process=":pushservice" />
-
         <service
             android:name=".AppMessageReceiverService"
             android:enabled="true"
@@ -70,6 +69,11 @@
             android:name=".activities.UserActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Account" />
+        <activity
+            android:name=".activities.SearchActivity"
+            android:label="@string/title_search"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.TransStatusBar" />
     </application>
 
 </manifest>
