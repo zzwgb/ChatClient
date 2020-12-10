@@ -234,18 +234,6 @@ public abstract class RecyclerAdapter<Data> extends
         this.mListener = adapterListener;
     }
 
-    /**
-     * 我们的自定义监听器
-     *
-     * @param <Data> 范型
-     */
-    public interface AdapterListener<Data> {
-        // 当Cell点击的时候触发
-        void onItemClick(RecyclerAdapter.ViewHolder holder, Data data);
-
-        // 当Cell长按时触发
-        void onItemLongClick(RecyclerAdapter.ViewHolder holder, Data data);
-    }
 
 
     /**
@@ -289,6 +277,19 @@ public abstract class RecyclerAdapter<Data> extends
                 this.callback.update(data, this);
             }
         }
+    }
+
+    /**
+     * 我们的自定义监听器
+     *
+     * @param <Data> 范型
+     */
+    public interface AdapterListener<Data> {
+        // 当Cell点击的时候触发
+        void onItemClick(RecyclerAdapter.ViewHolder holder, Data data);
+
+        // 当Cell长按时触发
+        void onItemLongClick(RecyclerAdapter.ViewHolder holder, Data data);
     }
 
     /**
