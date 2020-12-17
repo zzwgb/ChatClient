@@ -1,5 +1,6 @@
 package com.carson.factory.model.card;
 
+import com.carson.factory.model.Author;
 import com.carson.factory.model.db.User;
 
 import java.util.Date;
@@ -7,7 +8,7 @@ import java.util.Date;
 /**
  * Author: Create by Carson on 2020/11/30
  */
-public class UserCard {
+public class UserCard implements Author {
     private String id;
     private String name;
     private String phone;

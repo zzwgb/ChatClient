@@ -3,6 +3,10 @@ package com.carson.common.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 
+import com.bumptech.glide.RequestManager;
+import com.carson.common.R;
+import com.carson.factory.model.Author;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -22,7 +26,7 @@ public class PortraitView extends CircleImageView {
     }
 
 
-   /* public void setup(RequestManager manager, Author author) {
+    public void setup(RequestManager manager, Author author) {
         if (author == null)
             return;
         // 进行显示
@@ -44,7 +48,7 @@ public class PortraitView extends CircleImageView {
                 .dontAnimate() // CircleImageView 控件中不能使用渐变动画，会导致显示延迟
                 .into(this);
 
-    }*/
+    }
 
 }
 
