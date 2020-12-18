@@ -23,6 +23,7 @@ import com.carson.common.app.Activity;
 import com.carson.common.widget.PortraitView;
 import com.carson.factory.persistence.Account;
 import com.carson.net.activities.AccountActivity;
+import com.carson.net.activities.PersonalActivity;
 import com.carson.net.activities.SearchActivity;
 import com.carson.net.activities.UserActivity;
 import com.carson.net.frags.assist.PermissionFragment;
@@ -127,6 +128,13 @@ public class MainActivity extends Activity implements
         Menu menu = mNavigation.getMenu();
         // 触发首次选中Home
         menu.performIdentifierAction(R.id.action_home, 0);
+        // 初始化头像加载
+        mPortrait.setup(Glide.with(this), Account.getUser());
+    }
+
+    @OnClick(R.id.im_portrait)
+    void onPortraitClick() {
+        PersonalActivity.show(this, Account.getUserId());
     }
 
     @OnClick(R.id.im_search)

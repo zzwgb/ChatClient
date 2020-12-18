@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.carson.common.app.Fragment;
 import com.carson.common.app.PresenterFragment;
 import com.carson.common.widget.EmptyView;
 import com.carson.common.widget.PortraitView;
@@ -16,6 +15,8 @@ import com.carson.factory.model.db.User;
 import com.carson.factory.presenter.contact.ContactContract;
 import com.carson.factory.presenter.contact.ContactPresenter;
 import com.carson.net.R;
+import com.carson.net.activities.MessageActivity;
+import com.carson.net.activities.PersonalActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -123,7 +124,7 @@ public class ContactFragment extends PresenterFragment<ContactContract.Presenter
         @OnClick(R.id.im_portrait)
         void onPortraitClick() {
             // 显示信息
-            // PersonalActivity.show(getContext(), mData.getId());
+            PersonalActivity.show(getContext(), mData.getId());
         }
     }
 }

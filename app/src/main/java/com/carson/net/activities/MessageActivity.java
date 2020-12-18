@@ -1,4 +1,4 @@
-package com.carson.net.frags.main;
+package com.carson.net.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,7 +8,6 @@ import android.os.Bundle;
 
 import com.carson.factory.model.Author;
 import com.carson.net.R;
-import com.carson.net.activities.AccountActivity;
 
 public class MessageActivity extends AppCompatActivity {
 

@@ -21,6 +21,7 @@ import com.carson.factory.presenter.contact.FollowPresenter;
 import com.carson.factory.presenter.search.SearchContract;
 import com.carson.factory.presenter.search.SearchUserPresenter;
 import com.carson.net.R;
+import com.carson.net.activities.PersonalActivity;
 import com.carson.net.activities.SearchActivity;
 
 import net.qiujuer.genius.ui.Ui;
@@ -132,6 +133,11 @@ public class SearchUserFragment extends PresenterFragment<SearchContract.Present
             mFollow.setEnabled(!userCard.isFollow());
         }
 
+        @OnClick(R.id.im_portrait)
+        void onPortraitClick() {
+            // 显示信息
+            PersonalActivity.show(getContext(), mData.getId());
+        }
 
         @OnClick(R.id.im_follow)
         void onFollowClick() {
