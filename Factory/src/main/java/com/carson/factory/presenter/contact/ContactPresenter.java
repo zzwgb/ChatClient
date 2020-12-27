@@ -3,22 +3,19 @@ package com.carson.factory.presenter.contact;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 
+import com.carson.common.widget.recycler.RecyclerAdapter;
 import com.carson.factory.data.DataSource;
 import com.carson.factory.data.helper.UserHelper;
-import com.carson.factory.model.card.UserCard;
-import com.carson.factory.model.db.AppDatabase;
+
+import com.carson.factory.data.user.ContactDataSource;
+import com.carson.factory.data.user.ContactRepository;
 import com.carson.factory.model.db.User;
-import com.carson.factory.model.db.User_Table;
-import com.carson.factory.persistence.Account;
+
 import com.carson.factory.presenter.BasePresenter;
+import com.carson.factory.presenter.BaseRecyclerPresenter;
+import com.carson.factory.presenter.BaseSourcePresenter;
 import com.carson.factory.utils.DiffUiDataCallback;
-import com.raizlabs.android.dbflow.config.DatabaseDefinition;
-import com.raizlabs.android.dbflow.config.FlowManager;
-import com.raizlabs.android.dbflow.sql.language.CursorResult;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
-import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
-import com.raizlabs.android.dbflow.structure.database.transaction.ITransaction;
-import com.raizlabs.android.dbflow.structure.database.transaction.QueryTransaction;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,44 +24,27 @@ import java.util.List;
  * 联系人的Presenter实现
  * Author: Create by Carson on 2020/12/15
  */
-public class ContactPresenter extends BasePresenter<ContactContract.View>
-        implements ContactContract.Presenter {
+public class ContactPresenter extends
+        BaseSourcePresenter<User, User, ContactDataSource, ContactContract.View>
+        implements ContactContract.Presenter,
+        DataSource.SucceedCallback<List<User>> {
+
 
     public ContactPresenter(ContactContract.View view) {
-        super(view);
+        //初始化数据仓库
+        super(new ContactRepository(), view);
     }
 
     @Override
     public void start() {
         super.start();
-
-        //加载本地数据
-        SQLite.select()
-                .from(User.class)
-                .where(User_Table.isFollow.eq(true))
-                .and(User_Table.id.notEq(Account.getUserId()))
-                .orderBy(User_Table.name, true)
-                .limit(100)
-                .async()
-                .queryListResultCallback(new QueryTransaction.QueryResultListCallback<User>() {
-                    @Override
-                    public void onListQueryResult(QueryTransaction transaction, @NonNull List<User> tResult) {
-                        getView().getRecyclerAdapter().replace(tResult);
-                        getView().onAdapterDataChanged();
-                    }
-                }).execute();
-
         //加载网络数据
-        UserHelper.refreshContacts(new DataSource.Callback<List<UserCard>>() {
+        UserHelper.refreshContacts();
+    }
 
-            @Override
-            public void onDataNotAvailable(int strRes) {
 
-            }
-
-            @Override
-            public void onDataLoaded(List<UserCard> userCards) {
-                //UserCard转为User
+    /*
+     //UserCard转为User
                 final List<User> users = new ArrayList<>();
                 for (UserCard userCard : userCards)
                     users.add(userCard.build());
@@ -79,19 +59,23 @@ public class ContactPresenter extends BasePresenter<ContactContract.View>
                 }).build().execute();
                 //本地数据和网络数据对比
                 diff(getView().getRecyclerAdapter().getItems(), users);
-            }
-        });
-    }
+    * */
 
-    private void diff(List<User> oldList, List<User> newList) {
-        //进行数据比较
-        DiffUtil.Callback callback = new DiffUiDataCallback<User>(oldList, newList);
+
+    //运行到这里是在子线程
+    @Override
+    public void onDataLoaded(List<User> users) {
+        //无论是本地/网络数据的变更，最终都会通知这里来
+        final ContactContract.View view = getView();
+        if (view == null)
+            return;
+        RecyclerAdapter<User> adapter = view.getRecyclerAdapter();
+        List<User> oldList = adapter.getItems();
+
+        //进行数据对比
+        DiffUtil.Callback callback = new DiffUiDataCallback<User>(oldList, users);
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(callback);
-        //在对比完成后进行数据的赋值
-        getView().getRecyclerAdapter().replace(newList);
-        //尝试刷新界面
-        result.dispatchUpdatesTo(getView().getRecyclerAdapter());
-        getView().onAdapterDataChanged();
+        //调用基类方法进行界面刷新
+        refreshData(result, users);
     }
-
 }

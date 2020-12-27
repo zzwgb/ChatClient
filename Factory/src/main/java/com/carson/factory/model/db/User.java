@@ -14,7 +14,7 @@ import java.util.Objects;
  * Author: Create by Carson on 2020/11/19
  */
 @Table(database = AppDatabase.class)
-public class User extends BaseModel implements Author, DiffUiDataCallback.UiDataDiffer<User> {
+public class User extends BaseDbModel<User> implements Author {
 
     public static final int SEX_MAN = 1;
     public static final int SEX_WOMAN = 2;
