@@ -3,6 +3,7 @@ package com.carson.factory.persistence;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.carson.factory.Factory;
 import com.carson.factory.model.api.account.AccountRspModel;
@@ -60,6 +61,7 @@ public class Account {
         token = sp.getString(KEY_TOKEN, "");
         userId = sp.getString(KEY_USER_ID, "");
         account = sp.getString(KEY_ACCOUNT, "");
+        Log.e("account", "===" + account);
     }
 
 
