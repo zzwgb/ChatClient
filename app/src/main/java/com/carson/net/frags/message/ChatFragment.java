@@ -13,13 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.carson.common.app.Fragment;
+import com.carson.common.app.PresenterFragment;
 import com.carson.common.widget.PortraitView;
 import com.carson.common.widget.adapter.TextWatcherAdapter;
 import com.carson.common.widget.recycler.RecyclerAdapter;
 import com.carson.factory.model.db.Message;
 import com.carson.factory.model.db.User;
 import com.carson.factory.persistence.Account;
+import com.carson.factory.presenter.messsage.ChatContract;
 import com.carson.net.R;
 import com.carson.net.activities.MessageActivity;
 import com.google.android.material.appbar.AppBarLayout;
@@ -36,8 +37,10 @@ import butterknife.OnClick;
 /**
  * Author: Create by Carson on 2020/12/29
  */
-public abstract class ChatFragment extends Fragment
-        implements AppBarLayout.OnOffsetChangedListener {
+public abstract class ChatFragment<InitModel>
+        extends PresenterFragment<ChatContract.Presenter>
+        implements AppBarLayout.OnOffsetChangedListener,
+        ChatContract.View<InitModel> {
 
     protected String mReceiverId;
     protected Adapter mAdapter;
@@ -77,6 +80,12 @@ public abstract class ChatFragment extends Fragment
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter = new Adapter();
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+        mPresenter.start();
     }
 
     // 初始化Toolbar
@@ -131,6 +140,9 @@ public abstract class ChatFragment extends Fragment
         //TODO
         if (mSubmit.isActivated()) {
             // 发送
+            String content = mContent.getText().toString();
+            mContent.setText("");
+            mPresenter.pushText(content);
 
         } else {
             onMoreClick();
@@ -139,6 +151,18 @@ public abstract class ChatFragment extends Fragment
 
     private void onMoreClick() {
         //TODO
+    }
+
+
+    @Override
+    public RecyclerAdapter<Message> getRecyclerAdapter() {
+
+        return mAdapter;
+    }
+
+    @Override
+    public void onAdapterDataChanged() {
+        // 界面没有占位布局，Recycler是一直显示的，所有不需要做任何事情
     }
 
     // 内容的适配器
@@ -241,11 +265,11 @@ public abstract class ChatFragment extends Fragment
         @OnClick(R.id.im_portrait)
         void onRePushClick() {
             // 重新发送
-          /*  if (mLoading != null && mPresenter.rePush(mData)) {
+            if (mLoading != null && mPresenter.rePush(mData)) {
                 // 必须是右边的才有可能需要重新发送
                 // 状态改变需要重新刷新界面当前的信息
                 updateData(mData);
-            }*/
+            }
         }
     }
 

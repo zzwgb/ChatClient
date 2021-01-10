@@ -16,8 +16,8 @@ public class UserCard implements Author {
     private String desc;
     private int sex = 0;
 
-    private int follows;
     // 用户关注人的数量
+    private int follows;
 
     // 用户粉丝的数量
     private int following;

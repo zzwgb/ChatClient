@@ -1,19 +1,14 @@
 package com.carson.net.frags.message;
 
-import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
+import com.carson.factory.model.db.Group;
+import com.carson.factory.presenter.messsage.ChatContract;
 import com.carson.net.R;
 
 /**
  * 群聊页面
  */
-public class ChatGroupFragment extends ChatFragment {
+public class ChatGroupFragment extends ChatFragment<Group>
+        implements ChatContract.GroupView {
 
     public ChatGroupFragment() {
     }
@@ -21,5 +16,15 @@ public class ChatGroupFragment extends ChatFragment {
     @Override
     protected int getContentLayoutId() {
         return R.layout.fragment_chat_group;
+    }
+
+    @Override
+    protected ChatContract.Presenter initPresenter() {
+        return null;
+    }
+
+    @Override
+    public void onInit(Group group) {
+
     }
 }

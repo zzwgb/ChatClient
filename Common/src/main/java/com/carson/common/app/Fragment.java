@@ -2,6 +2,7 @@ package com.carson.common.app;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +58,7 @@ public abstract class Fragment extends androidx.fragment.app.Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (mIsFirstInitData) {
+            Log.e("onViewCreate---", "-----");
             // 触发一次以后就不会触发
             mIsFirstInitData = false;
             // 触发

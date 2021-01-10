@@ -39,6 +39,7 @@ public class ContactFragment extends PresenterFragment<ContactContract.Presenter
 
     @Override
     protected int getContentLayoutId() {
+
         return R.layout.fragment_contract;
     }
 
@@ -84,6 +85,7 @@ public class ContactFragment extends PresenterFragment<ContactContract.Presenter
 
     @Override
     protected ContactContract.Presenter initPresenter() {
+
         return new ContactPresenter(this);
     }
 

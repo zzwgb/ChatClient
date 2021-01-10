@@ -1,19 +1,24 @@
 package com.carson.net.frags.message;
 
-import android.os.Bundle;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
+import android.graphics.drawable.Drawable;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomViewTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.carson.common.widget.PortraitView;
+import com.carson.factory.model.db.User;
+import com.carson.factory.presenter.messsage.ChatContract;
+import com.carson.factory.presenter.messsage.ChatUserPresenter;
 import com.carson.net.R;
 import com.carson.net.activities.PersonalActivity;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -21,7 +26,8 @@ import butterknife.OnClick;
 /**
  * 单聊页面
  */
-public class ChatUserFragment extends ChatFragment {
+public class ChatUserFragment extends ChatFragment<User>
+        implements ChatContract.UserView {
 
     @BindView(R.id.im_portrait)
     PortraitView mPortrait;
@@ -34,6 +40,30 @@ public class ChatUserFragment extends ChatFragment {
     @Override
     protected int getContentLayoutId() {
         return R.layout.fragment_chat_user;
+    }
+
+    @Override
+    protected void initWidget(View root) {
+        super.initWidget(root);
+
+        Glide.with(this)
+                .load(R.drawable.default_banner_chat)
+                .centerCrop()
+                .into(new CustomViewTarget<CollapsingToolbarLayout, Drawable>(mCollapsingLayout) {
+                    @Override
+                    public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                    }
+
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                        this.view.setContentScrim(resource);
+                    }
+
+                    @Override
+                    protected void onResourceCleared(@Nullable Drawable placeholder) {
+                    }
+                });
+
     }
 
     @Override
@@ -109,5 +139,17 @@ public class ChatUserFragment extends ChatFragment {
     @OnClick(R.id.im_portrait)
     void onPortraitClick() {
         PersonalActivity.show(getContext(), mReceiverId);
+    }
+
+    @Override
+    protected ChatContract.Presenter initPresenter() {
+        return new ChatUserPresenter(this, mReceiverId);
+    }
+
+    @Override
+    public void onInit(User user) {
+        //对和你聊天的朋友的信息进行初始化操作
+        mPortrait.setup(Glide.with(this), user.getPortrait());
+        mCollapsingLayout.setTitle(user.getName());
     }
 }
