@@ -18,7 +18,8 @@ import java.util.List;
  * 实现对数据库的基本的监听操作
  * Author: Create by Carson on 2020/12/25
  */
-public abstract class BaseDbRepository<Data extends BaseDbModel<Data>> implements DbDataSource<Data>,
+public abstract class BaseDbRepository<Data extends BaseDbModel<Data>>
+        implements DbDataSource<Data>,
         DbHelper.ChangedListener<Data>,
         QueryTransaction.QueryResultListCallback<Data> {
 
