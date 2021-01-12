@@ -48,10 +48,6 @@ public class MessageRepository extends BaseDbRepository<Message>
                 .execute();
     }
 
-    @Override
-    public void dispose() {
-
-    }
 
     @Override
     protected boolean isRequired(Message message) {

@@ -33,7 +33,7 @@ public class PersonalPresenter extends BasePresenter<PersonalContract.View>
                 if (view != null) {
                     String id = view.getUserId();
                     User user = UserHelper.searchFirstOfNet(id);
-                    onLoaded(view, user);
+                    onLoaded(user);
                 }
             }
         });
@@ -44,7 +44,7 @@ public class PersonalPresenter extends BasePresenter<PersonalContract.View>
      *
      * @param user 用户信息
      */
-    private void onLoaded(PersonalContract.View view, final User user) {
+    private void onLoaded(final User user) {
         this.user = user;
         // 是否就是我自己
         final boolean isSelf = user.getId().equalsIgnoreCase(Account.getUserId());
