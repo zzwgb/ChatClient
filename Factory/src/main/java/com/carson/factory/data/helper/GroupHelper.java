@@ -6,12 +6,18 @@ import com.carson.factory.data.DataSource;
 import com.carson.factory.model.api.RspModel;
 import com.carson.factory.model.api.group.GroupCreateModel;
 import com.carson.factory.model.card.GroupCard;
+import com.carson.factory.model.card.GroupMemberCard;
 import com.carson.factory.model.db.Group;
+import com.carson.factory.model.db.GroupMember;
+import com.carson.factory.model.db.GroupMember_Table;
 import com.carson.factory.model.db.Group_Table;
 import com.carson.factory.model.db.User;
+import com.carson.factory.model.db.User_Table;
+import com.carson.factory.model.db.view.MemberUserModel;
 import com.carson.factory.net.Network;
 import com.carson.factory.net.RemoteService;
 import com.carson.factory.presenter.group.GroupCreatePresenter;
+import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.List;
@@ -117,5 +123,78 @@ public class GroupHelper {
 
         // 把当前的调度者返回
         return call;
+    }
+
+    // 刷新我的群组列表
+    public static void refreshGroups() {
+        RemoteService service = Network.remote();
+        service.groups("").enqueue(new Callback<RspModel<List<GroupCard>>>() {
+            @Override
+            public void onResponse(Call<RspModel<List<GroupCard>>> call, Response<RspModel<List<GroupCard>>> response) {
+                RspModel<List<GroupCard>> rspModel = response.body();
+                if (rspModel.success()) {
+                    List<GroupCard> groupCards = rspModel.getResult();
+                    if (groupCards != null && groupCards.size() > 0) {
+                        // 进行调度显示
+                        Factory.getGroupCenter().dispatch(groupCards.toArray(new GroupCard[0]));
+                    }
+                } else {
+                    Factory.decodeRspCode(rspModel, null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RspModel<List<GroupCard>>> call, Throwable t) {
+                // 不做任何事情
+            }
+        });
+    }
+
+    // 获取一个群的成员数量
+    public static long getMemberCount(String id) {
+        return SQLite.selectCountOf()
+                .from(GroupMember.class)
+                .where(GroupMember_Table.group_id.eq(id))
+                .count();
+    }
+
+    // 从网络去刷新一个群的成员信息
+    public static void refreshGroupMember(Group group) {
+        RemoteService service = Network.remote();
+        service.groupMembers(group.getId()).enqueue(new Callback<RspModel<List<GroupMemberCard>>>() {
+            @Override
+            public void onResponse(Call<RspModel<List<GroupMemberCard>>> call, Response<RspModel<List<GroupMemberCard>>> response) {
+                RspModel<List<GroupMemberCard>> rspModel = response.body();
+                if (rspModel.success()) {
+                    List<GroupMemberCard> memberCards = rspModel.getResult();
+                    if (memberCards != null && memberCards.size() > 0) {
+                        // 进行调度显示
+                        Factory.getGroupCenter().dispatch(memberCards.toArray(new GroupMemberCard[0]));
+                    }
+                } else {
+                    Factory.decodeRspCode(rspModel, null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RspModel<List<GroupMemberCard>>> call, Throwable t) {
+                // 不做任何事情
+            }
+        });
+    }
+
+    // 关联查询一个用户和群成员的表，返回一个MemberUserModel表的集合
+    public static List<MemberUserModel> getMemberUsers(String groupId, int size) {
+        return SQLite.select(GroupMember_Table.alias.withTable().as("alias"),
+                User_Table.id.withTable().as("userId"),
+                User_Table.name.withTable().as("name"),
+                User_Table.portrait.withTable().as("portrait"))
+                .from(GroupMember.class)
+                .join(User.class, Join.JoinType.INNER)
+                .on(GroupMember_Table.user_id.withTable().eq(User_Table.id.withTable()))
+                .where(GroupMember_Table.group_id.withTable().eq(groupId))
+                .orderBy(GroupMember_Table.user_id, true)
+                .limit(size)
+                .queryCustomList(MemberUserModel.class);
     }
 }

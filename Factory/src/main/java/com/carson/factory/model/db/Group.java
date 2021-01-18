@@ -1,5 +1,7 @@
 package com.carson.factory.model.db;
 
+import com.carson.factory.data.helper.GroupHelper;
+import com.carson.factory.model.db.view.MemberUserModel;
 import com.carson.factory.utils.DiffUiDataCallback;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
@@ -10,6 +12,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -38,6 +41,7 @@ public class Group extends BaseDbModel<Group> implements Serializable {
 
 
     public Object holder; // 预留字段，用于界面显示
+
 
     public String getId() {
         return id;
@@ -140,5 +144,28 @@ public class Group extends BaseDbModel<Group> implements Serializable {
                 && Objects.equals(this.desc, oldT.desc)
                 && Objects.equals(this.picture, oldT.picture)
                 && Objects.equals(this.holder, oldT.holder);
+    }
+
+    private long groupMemberCount = -1;
+
+    // 获取当前群的成员数量，使用内存缓存
+    public long getGroupMemberCount() {
+        if (groupMemberCount == -1) {
+            // -1 没有初始化
+            groupMemberCount = GroupHelper.getMemberCount(id);
+        }
+        return groupMemberCount;
+    }
+
+    private List<MemberUserModel> groupLatelyMembers;
+
+    // 获取当前群对应的成员的信息，只加载4个信息
+    public List<MemberUserModel> getLatelyGroupMembers() {
+        if (groupLatelyMembers == null || groupLatelyMembers.isEmpty()) {
+            // 加载简单的用户信息，返回4条，至多
+            groupLatelyMembers = GroupHelper.getMemberUsers(id, 4);
+        }
+
+        return groupLatelyMembers;
     }
 }
