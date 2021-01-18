@@ -59,7 +59,7 @@ public abstract class PresenterToolbarActivity<Presenter extends BaseContract.Pr
         if (mPlaceHolderView != null) {
             mPlaceHolderView.triggerLoading();
         } else {
-          /*  ProgressDialog dialog = mLoadingDialog;
+            ProgressDialog dialog = mLoadingDialog;
             if (dialog == null) {
                 dialog = new ProgressDialog(this, R.style.AppTheme_Dialog_Alert_Light);
                 // 不可触摸取消
@@ -76,7 +76,7 @@ public abstract class PresenterToolbarActivity<Presenter extends BaseContract.Pr
             }
 
             dialog.setMessage(getText(R.string.prompt_loading));
-            dialog.show(); */
+            dialog.show();
         }
     }
 

@@ -2,6 +2,8 @@ package com.carson.common.app;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -50,7 +52,11 @@ public abstract class Activity extends AppCompatActivity {
      * 初始化窗口
      */
     protected void initWidows() {
+       /* getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        //标题是属于View的，所以窗口所有的修饰部分被隐藏后标题依然有效,需要去掉标题
+        requestWindowFeature(Window.FEATURE_NO_TITLE);*/
     }
 
     /**

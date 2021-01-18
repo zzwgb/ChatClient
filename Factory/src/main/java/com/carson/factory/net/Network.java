@@ -75,10 +75,11 @@ public class Network {
         OkHttpClient client = getClient();
         // Retrofit
         Retrofit.Builder builder = new Retrofit.Builder();
-        return builder.baseUrl(Common.Constance.API_URL)
+        instance.retrofit = builder.baseUrl(Common.Constance.API_URL)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create(Factory.getGson()))
                 .build();
+        return instance.retrofit;
     }
 
     /**

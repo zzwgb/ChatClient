@@ -23,6 +23,7 @@ import com.carson.common.app.Activity;
 import com.carson.common.widget.PortraitView;
 import com.carson.factory.persistence.Account;
 import com.carson.net.activities.AccountActivity;
+import com.carson.net.activities.GroupCreateActivity;
 import com.carson.net.activities.PersonalActivity;
 import com.carson.net.activities.SearchActivity;
 import com.carson.net.activities.UserActivity;
@@ -153,7 +154,7 @@ public class MainActivity extends Activity implements
         // 如果是群，则打开群创建的界面
         if (Objects.equals(mNavHelper.getCurrentTab().extra, R.string.title_group)) {
             // 打开群创建界面
-            //GroupCreateActivity.show(this);
+            GroupCreateActivity.show(this);
         } else {
             // 如果是其他，都打开添加用户的界面
             SearchActivity.show(this, SearchActivity.TYPE_USER);
