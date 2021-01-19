@@ -37,9 +37,15 @@ public class ChatUserFragment extends ChatFragment<User>
     public ChatUserFragment() {
     }
 
+   /* 没法再复写了，基类已经final了
     @Override
     protected int getContentLayoutId() {
         return R.layout.fragment_chat_user;
+    }*/
+
+    @Override
+    protected int getHeaderLayoutId() {
+        return R.layout.lay_chat_header_user;
     }
 
     @Override
