@@ -29,7 +29,7 @@ public class MessageGroupRepository extends BaseDbRepository<Message>
 
     @Override
     public void load(SucceedCallback<List<Message>> callback) {
-        super.load(callback);
+        super.load(callback);  // 这里会进行数据库监听操作
 
         // 无论是直接发还是别人发，只要是发到这个群的，
         // 那个这个group_id就是receiverId

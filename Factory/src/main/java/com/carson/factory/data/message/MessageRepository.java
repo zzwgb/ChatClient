@@ -1,4 +1,4 @@
-package com.carson.factory.presenter.messsage;
+package com.carson.factory.data.message;
 
 import androidx.annotation.NonNull;
 

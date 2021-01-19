@@ -32,7 +32,7 @@ public class ChatGroupPresenter extends ChatPresenter<ChatContract.GroupView>
             ChatContract.GroupView view = getView();
 
             boolean isAdmin = Account.getUserId().equalsIgnoreCase(group.getOwner().getId());
-            //view.showAdminOption(isAdmin);
+            view.showAdminOption(isAdmin);
 
             // 基础信息初始化
             view.onInit(group);
@@ -42,7 +42,7 @@ public class ChatGroupPresenter extends ChatPresenter<ChatContract.GroupView>
             final long memberCount = group.getGroupMemberCount();
             // 没有显示的成员的数量
             long moreCount = memberCount - models.size();
-            //view.onInitGroupMembers(models, moreCount);
+            view.onInitGroupMembers(models, moreCount);
         }
 
     }

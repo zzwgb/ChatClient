@@ -1,7 +1,7 @@
 package com.carson.factory.presenter.messsage;
 
 import com.carson.factory.data.helper.UserHelper;
-import com.carson.factory.data.message.MessageDataSource;
+import com.carson.factory.data.message.MessageRepository;
 import com.carson.factory.model.db.Message;
 import com.carson.factory.model.db.User;
 
