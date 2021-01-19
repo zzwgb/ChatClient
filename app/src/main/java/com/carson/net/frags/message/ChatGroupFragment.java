@@ -143,7 +143,7 @@ public class ChatGroupFragment extends ChatFragment<Group>
                     // 群成员添加操作
                     if (item.getItemId() == R.id.action_add) {
                         // mReceiverId 就是群的Id
-                        //GroupMemberActivity.showAdmin(getContext(), mReceiverId);
+                        GroupMemberActivity.showAdmin(getContext(), mReceiverId);
                         return true;
                     }
                     return false;
@@ -185,7 +185,7 @@ public class ChatGroupFragment extends ChatFragment<Group>
                 @Override
                 public void onClick(View v) {
                     // mReceiverId 就是群的Id
-                    // GroupMemberActivity.show(getContext(), mReceiverId);
+                    GroupMemberActivity.show(getContext(), mReceiverId);
                 }
             });
         } else {

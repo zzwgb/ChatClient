@@ -18,7 +18,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.GroupMemberActivity"></activity>
         <!--
         <receiver android:name=".MessageReceiver"
             android:enabled="true"
@@ -89,6 +88,11 @@
             android:name=".activities.GroupCreateActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Group.Create" />
+        <activity
+            android:name=".activities.GroupMemberActivity"
+            android:label="@string/title_member_list"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.TransStatusBar" />
     </application>
 
 </manifest>
