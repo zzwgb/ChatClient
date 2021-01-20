@@ -9,10 +9,12 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
+import net.qiujuer.widget.airpanel.AirPanelLinearLayout;
+
 /**
  * Author: Create by Carson on 2020/12/30
  */
-public class MessageLayout extends LinearLayout {
+public class MessageLayout extends AirPanelLinearLayout {
     public MessageLayout(Context context) {
         super(context);
     }

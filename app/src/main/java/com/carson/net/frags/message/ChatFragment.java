@@ -25,11 +25,14 @@ import com.carson.factory.persistence.Account;
 import com.carson.factory.presenter.messsage.ChatContract;
 import com.carson.net.R;
 import com.carson.net.activities.MessageActivity;
+import com.carson.net.frags.panel.PanelFragment;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import net.qiujuer.genius.ui.compat.UiCompat;
 import net.qiujuer.genius.ui.widget.Loading;
+import net.qiujuer.widget.airpanel.AirPanel;
+import net.qiujuer.widget.airpanel.Util;
 
 import java.util.Objects;
 
@@ -46,6 +49,10 @@ public abstract class ChatFragment<InitModel>
 
     protected String mReceiverId;
     protected Adapter mAdapter;
+
+    // 控制顶部面板与软键盘过度的Boss控件
+    private AirPanel.Boss mPanelBoss;
+    private PanelFragment mPanelFragment;
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -92,6 +99,35 @@ public abstract class ChatFragment<InitModel>
 
         // 在这里进行了ButterKnife绑定
         super.initWidget(root);
+
+        // 初始化面板操作
+        mPanelBoss = (AirPanel.Boss) root.findViewById(R.id.lay_content);
+        mPanelBoss.setup(new AirPanel.PanelListener() {
+            @Override
+            public void requestHideSoftKeyboard() {
+                // 请求隐藏软键盘
+                Util.hideKeyboard(mContent);
+            }
+        });
+        mPanelBoss.setOnStateChangedListener(new AirPanel.OnStateChangedListener() {
+            @Override
+            public void onPanelStateChanged(boolean isOpen) {
+                // 面板改变
+                if (isOpen) {
+                }
+                // onBottomPanelOpened();
+            }
+
+            @Override
+            public void onSoftKeyboardStateChanged(boolean isOpen) {
+                // 软键盘改变
+                if (isOpen) {
+                }
+                // onBottomPanelOpened();
+            }
+        });
+        mPanelFragment = (PanelFragment) getChildFragmentManager().findFragmentById(R.id.frag_panel);
+        // mPanelFragment.setup(this);
 
         initToolbar();
         initAppbar();
@@ -146,18 +182,20 @@ public abstract class ChatFragment<InitModel>
 
     @OnClick(R.id.btn_face)
     void onFaceClick() {
-        //TODO 仅仅只需请求打开即可
+        // 仅仅只需请求打开即可
+        mPanelBoss.openPanel();
+        mPanelFragment.showFace();
 
     }
 
     @OnClick(R.id.btn_record)
     void onRecordClick() {
-        //TODO
+        mPanelBoss.openPanel();
+        mPanelFragment.showRecord();
     }
 
     @OnClick(R.id.btn_submit)
     void onSubmitClick() {
-        //TODO
         if (mSubmit.isActivated()) {
             // 发送
             String content = mContent.getText().toString();
@@ -170,7 +208,8 @@ public abstract class ChatFragment<InitModel>
     }
 
     private void onMoreClick() {
-        //TODO
+        mPanelBoss.openPanel();
+        mPanelFragment.showGallery();
     }
 
 

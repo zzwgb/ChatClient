@@ -59,5 +59,7 @@ dependencies {
     implementation "pub.devrel:easypermissions:$rootProject.ext.easyPMVersion"
     // 个推
     api "com.getui:sdk:$rootProject.ext.getuiVersion"
+    // 空气面板
+    api "net.qiujuer.widget:airpanel:$rootProject.ext.airpanelVersion"
 
 }

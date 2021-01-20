@@ -2,6 +2,7 @@
 <com.carson.common.widget.MessageLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lay_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -98,4 +99,20 @@
             android:src="@drawable/ic_submit"
             app:tint="@color/textPrimary" />
     </LinearLayout>
+
+    <!--id是固定的airPanelSubLayout-->
+    <net.qiujuer.widget.airpanel.AirPanelFrameLayout
+        android:id="@id/airPanelSubLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white_alpha_224"
+        android:visibility="gone">
+
+        <fragment
+            android:id="@+id/frag_panel"
+            class="com.carson.net.frags.panel.PanelFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </net.qiujuer.widget.airpanel.AirPanelFrameLayout>
+
 </com.carson.common.widget.MessageLayout>
