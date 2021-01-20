@@ -20,12 +20,13 @@ import com.carson.factory.model.db.view.MemberUserModel;
 import com.carson.factory.presenter.group.GroupMembersContract;
 import com.carson.factory.presenter.group.GroupMembersPresenter;
 import com.carson.net.R;
+import com.carson.net.frags.group.GroupMemberAddFragment;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
 public class GroupMemberActivity extends PresenterToolbarActivity<GroupMembersContract.Presenter>
-        implements GroupMembersContract.View {
+        implements GroupMembersContract.View, GroupMemberAddFragment.Callback {
 
     private static final String KEY_GROUP_ID = "KEY_GROUP_ID";
     private static final String KEY_GROUP_ADMIN = "KEY_GROUP_ADMIN";
@@ -97,10 +98,10 @@ public class GroupMemberActivity extends PresenterToolbarActivity<GroupMembersCo
         mPresenter.refresh();
 
         // 显示管理员界面，添加成员
-       /* if (mIsAdmin) {
+        if (mIsAdmin) {
             new GroupMemberAddFragment()
                     .show(getSupportFragmentManager(), GroupMemberAddFragment.class.getName());
-        }*/
+        }
     }
 
 
@@ -112,6 +113,18 @@ public class GroupMemberActivity extends PresenterToolbarActivity<GroupMembersCo
     @Override
     public String getGroupId() {
         return mGroupId;
+    }
+
+    @Override
+    public void hideLoading() {
+        super.hideLoading();
+    }
+
+    @Override
+    public void refreshMembers() {
+        // 重新加载成员信息
+        if (mPresenter != null)
+            mPresenter.refresh();
     }
 
     @Override

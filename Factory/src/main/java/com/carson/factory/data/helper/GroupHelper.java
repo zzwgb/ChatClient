@@ -5,6 +5,7 @@ import com.carson.factory.R;
 import com.carson.factory.data.DataSource;
 import com.carson.factory.model.api.RspModel;
 import com.carson.factory.model.api.group.GroupCreateModel;
+import com.carson.factory.model.api.group.GroupMemberAddModel;
 import com.carson.factory.model.card.GroupCard;
 import com.carson.factory.model.card.GroupMemberCard;
 import com.carson.factory.model.db.Group;
@@ -17,6 +18,7 @@ import com.carson.factory.model.db.view.MemberUserModel;
 import com.carson.factory.net.Network;
 import com.carson.factory.net.RemoteService;
 import com.carson.factory.presenter.group.GroupCreatePresenter;
+import com.carson.factory.presenter.group.GroupMemberAddPresenter;
 import com.raizlabs.android.dbflow.sql.language.Join;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
@@ -196,5 +198,32 @@ public class GroupHelper {
                 .orderBy(GroupMember_Table.user_id, true)
                 .limit(size)
                 .queryCustomList(MemberUserModel.class);
+    }
+
+    // 网络请求进行成员添加
+    public static void addMembers(String groupId, GroupMemberAddModel model, final DataSource.Callback<List<GroupMemberCard>> callback) {
+        RemoteService service = Network.remote();
+        service.groupMemberAdd(groupId, model)
+                .enqueue(new Callback<RspModel<List<GroupMemberCard>>>() {
+                    @Override
+                    public void onResponse(Call<RspModel<List<GroupMemberCard>>> call, Response<RspModel<List<GroupMemberCard>>> response) {
+                        RspModel<List<GroupMemberCard>> rspModel = response.body();
+                        if (rspModel.success()) {
+                            List<GroupMemberCard> memberCards = rspModel.getResult();
+                            if (memberCards != null && memberCards.size() > 0) {
+                                // 进行调度显示
+                                Factory.getGroupCenter().dispatch(memberCards.toArray(new GroupMemberCard[0]));
+                                callback.onDataLoaded(memberCards);
+                            }
+                        } else {
+                            Factory.decodeRspCode(rspModel, null);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<RspModel<List<GroupMemberCard>>> call, Throwable t) {
+                        callback.onDataNotAvailable(R.string.data_network_error);
+                    }
+                });
     }
 }
