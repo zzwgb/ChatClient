@@ -1,3 +1,4 @@
+include ':Face'
 include ':Factory'
 include ':Lang'
 include ':Common'

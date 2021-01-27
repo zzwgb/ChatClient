@@ -16,6 +16,7 @@ import com.carson.common.widget.EmptyView;
 
 import com.carson.common.widget.PortraitView;
 import com.carson.common.widget.recycler.RecyclerAdapter;
+import com.carson.face.Face;
 import com.carson.factory.model.db.Session;
 import com.carson.factory.presenter.messsage.SessionContract;
 import com.carson.factory.presenter.messsage.SessionPresenter;
@@ -137,11 +138,11 @@ public class ActiveFragment extends PresenterFragment<SessionContract.Presenter>
             mName.setText(session.getTitle());
 
             String str = TextUtils.isEmpty(session.getContent()) ? "" : session.getContent();
-            //Spannable spannable = new SpannableString(str);
+            Spannable spannable = new SpannableString(str);
             // 解析表情
-            //Face.decode(mContent, spannable, (int) mContent.getTextSize());
+            Face.decode(mContent, spannable, (int) mContent.getTextSize());
             // 把内容设置到布局上
-            mContent.setText(str);
+            mContent.setText(spannable);
 
             mTime.setText(DateTimeUtil.getSampleDate(session.getModifyAt()));
         }

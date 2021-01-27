@@ -2,10 +2,13 @@ package com.carson.net.frags.message;
 
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.LayoutRes;
@@ -19,6 +22,7 @@ import com.carson.common.app.PresenterFragment;
 import com.carson.common.widget.PortraitView;
 import com.carson.common.widget.adapter.TextWatcherAdapter;
 import com.carson.common.widget.recycler.RecyclerAdapter;
+import com.carson.face.Face;
 import com.carson.factory.model.db.Message;
 import com.carson.factory.model.db.User;
 import com.carson.factory.persistence.Account;
@@ -29,11 +33,13 @@ import com.carson.net.frags.panel.PanelFragment;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
+import net.qiujuer.genius.ui.Ui;
 import net.qiujuer.genius.ui.compat.UiCompat;
 import net.qiujuer.genius.ui.widget.Loading;
 import net.qiujuer.widget.airpanel.AirPanel;
 import net.qiujuer.widget.airpanel.Util;
 
+import java.io.File;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -45,7 +51,7 @@ import butterknife.OnClick;
 public abstract class ChatFragment<InitModel>
         extends PresenterFragment<ChatContract.Presenter>
         implements AppBarLayout.OnOffsetChangedListener,
-        ChatContract.View<InitModel> {
+        ChatContract.View<InitModel>, PanelFragment.PanelCallback {
 
     protected String mReceiverId;
     protected Adapter mAdapter;
@@ -53,6 +59,7 @@ public abstract class ChatFragment<InitModel>
     // 控制顶部面板与软键盘过度的Boss控件
     private AirPanel.Boss mPanelBoss;
     private PanelFragment mPanelFragment;
+
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -87,6 +94,7 @@ public abstract class ChatFragment<InitModel>
     // 得到顶部布局的资源Id
     @LayoutRes
     protected abstract int getHeaderLayoutId();
+
 
     @Override
     protected void initWidget(View root) {
@@ -127,7 +135,7 @@ public abstract class ChatFragment<InitModel>
             }
         });
         mPanelFragment = (PanelFragment) getChildFragmentManager().findFragmentById(R.id.frag_panel);
-        // mPanelFragment.setup(this);
+        mPanelFragment.setup(this);
 
         initToolbar();
         initAppbar();
@@ -223,6 +231,25 @@ public abstract class ChatFragment<InitModel>
     public void onAdapterDataChanged() {
         // 界面没有占位布局，Recycler是一直显示的，所有不需要做任何事情
     }
+
+    @Override
+    public EditText getInputEditText() {
+        // 返回输入框
+        return mContent;
+    }
+
+    @Override
+    public void onSendGallery(String[] paths) {
+        // 图片回调回来
+        mPresenter.pushImages(paths);
+    }
+
+    @Override
+    public void onRecordDone(File file, long time) {
+        // 语音回调回来
+        mPresenter.pushAudio(file.getAbsolutePath(), time);
+    }
+
 
     // 内容的适配器
     private class Adapter extends RecyclerAdapter<Message> {
@@ -345,13 +372,23 @@ public abstract class ChatFragment<InitModel>
         protected void onBind(Message message) {
             super.onBind(message);
 
+            Spannable spannable = new SpannableString(message.getContent());
+
+            // 解析表情
+            Face.decode(mContent, spannable, (int) Ui.dipToPx(getResources(), 20));
+
             // 把内容设置到布局上
-            mContent.setText(message.getContent());
+            mContent.setText(spannable);
         }
     }
 
     // 语音的Holder
     class AudioHolder extends BaseHolder {
+
+        @BindView(R.id.txt_content)
+        TextView mContent;
+        @BindView(R.id.im_audio_track)
+        ImageView mAudioTrack;
 
         public AudioHolder(View itemView) {
             super(itemView);
@@ -360,19 +397,22 @@ public abstract class ChatFragment<InitModel>
         @Override
         protected void onBind(Message message) {
             super.onBind(message);
-            //TODO
+            // long 30000
+            String attach = TextUtils.isEmpty(message.getAttach()) ? "0" :
+                    message.getAttach();
+            mContent.setText(formatTime(attach));
         }
 
         // 当播放开始
         void onPlayStart() {
             // 显示
-            //mAudioTrack.setVisibility(View.VISIBLE);
+            mAudioTrack.setVisibility(View.VISIBLE);
         }
 
         // 当播放停止
         void onPlayStop() {
             // 占位并隐藏
-            // mAudioTrack.setVisibility(View.INVISIBLE);
+            mAudioTrack.setVisibility(View.INVISIBLE);
         }
 
         private String formatTime(String attach) {
@@ -384,7 +424,7 @@ public abstract class ChatFragment<InitModel>
                 time = 0;
             }
             // 12000/1000f = 12.0000000
-            // 取整一位小数点 1.234 -> 1.2 1.02 -> 1.0
+            // 取整一位小数点 1.234 -> 1.2 , 1.02 -> 1.0
             String shortTime = String.valueOf(Math.round(time * 10f) / 10f);
             // 1.0 -> 1     1.2000 -> 1.2
             shortTime = shortTime.replaceAll("[.]0+?$|0+?$", "");
@@ -394,6 +434,9 @@ public abstract class ChatFragment<InitModel>
 
     // 图片的Holder
     class PicHolder extends BaseHolder {
+
+        @BindView(R.id.im_image)
+        ImageView mContent;
 
         public PicHolder(View itemView) {
             super(itemView);
@@ -405,10 +448,10 @@ public abstract class ChatFragment<InitModel>
             // 当是图片类型的时候，Content中就是具体的地址
             String content = message.getContent();
 
-           /* Glide.with(ChatFragment.this)
+            Glide.with(ChatFragment.this)
                     .load(content)
                     .fitCenter()
-                    .into(mContent);*/
+                    .into(mContent);
         }
     }
 }

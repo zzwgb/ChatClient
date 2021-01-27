@@ -78,6 +78,7 @@ public class Application extends android.app.Application {
         if (files != null && files.length > 0) {
             for (File file : files) {
                 boolean isTempFile = file.getName().lastIndexOf("tmp.mp3") != -1;
+                //isTempFile true是临时文件，false不是临时文件
                 if (isTmp != isTempFile) {
                     continue;
                 }
