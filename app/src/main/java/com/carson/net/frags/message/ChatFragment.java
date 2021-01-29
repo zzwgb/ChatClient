@@ -18,7 +18,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.carson.common.app.Application;
 import com.carson.common.app.PresenterFragment;
+import com.carson.common.tools.AudioPlayHelper;
 import com.carson.common.widget.PortraitView;
 import com.carson.common.widget.adapter.TextWatcherAdapter;
 import com.carson.common.widget.recycler.RecyclerAdapter;
@@ -27,12 +29,15 @@ import com.carson.factory.model.db.Message;
 import com.carson.factory.model.db.User;
 import com.carson.factory.persistence.Account;
 import com.carson.factory.presenter.messsage.ChatContract;
+import com.carson.factory.utils.FileCache;
 import com.carson.net.R;
 import com.carson.net.activities.MessageActivity;
 import com.carson.net.frags.panel.PanelFragment;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
+import net.qiujuer.genius.kit.handler.Run;
+import net.qiujuer.genius.kit.handler.runable.Action;
 import net.qiujuer.genius.ui.Ui;
 import net.qiujuer.genius.ui.compat.UiCompat;
 import net.qiujuer.genius.ui.widget.Loading;
@@ -59,6 +64,10 @@ public abstract class ChatFragment<InitModel>
     // 控制顶部面板与软键盘过度的Boss控件
     private AirPanel.Boss mPanelBoss;
     private PanelFragment mPanelFragment;
+
+    // 语音的基础
+    private FileCache<AudioHolder> mAudioFileCache;
+    private AudioPlayHelper<AudioHolder> mAudioPlayer;
 
 
     @BindView(R.id.toolbar)
@@ -121,17 +130,15 @@ public abstract class ChatFragment<InitModel>
             @Override
             public void onPanelStateChanged(boolean isOpen) {
                 // 面板改变
-                if (isOpen) {
-                }
-                // onBottomPanelOpened();
+                if (isOpen)
+                    onBottomPanelOpened();
             }
 
             @Override
             public void onSoftKeyboardStateChanged(boolean isOpen) {
                 // 软键盘改变
-                if (isOpen) {
-                }
-                // onBottomPanelOpened();
+                if (isOpen)
+                    onBottomPanelOpened();
             }
         });
         mPanelFragment = (PanelFragment) getChildFragmentManager().findFragmentById(R.id.frag_panel);
@@ -144,6 +151,74 @@ public abstract class ChatFragment<InitModel>
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter = new Adapter();
         mRecyclerView.setAdapter(mAdapter);
+
+        // 添加适配器监听器，进行点击的实现
+        mAdapter.setListener(new RecyclerAdapter.AdapterListenerImpl<Message>() {
+            @Override
+            public void onItemClick(RecyclerAdapter.ViewHolder holder, Message message) {
+                if (message.getType() == Message.TYPE_AUDIO && holder instanceof ChatFragment.AudioHolder) {
+                    // 权限的判断，当然权限已经全局申请了
+                    mAudioFileCache.download((ChatFragment.AudioHolder) holder, message.getContent());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // 进入界面的时候就进行初始化
+        mAudioPlayer = new AudioPlayHelper<>(new AudioPlayHelper.AudioPlayListener<AudioHolder>() {
+            @Override
+            public void onPlayStart(AudioHolder audioHolder) {
+                // 范型作用就在于此
+                audioHolder.onPlayStart();
+            }
+
+            @Override
+            public void onPlayStop(AudioHolder audioHolder) {
+                // 直接停止
+                audioHolder.onPlayStop();
+            }
+
+            @Override
+            public void onPlayError(AudioHolder audioHolder) {
+                // 提示失败
+                Application.showToast(R.string.toast_audio_play_error);
+            }
+        });
+
+        // 下载工具类
+        mAudioFileCache = new FileCache<>("audio/cache", "mp3", new FileCache.CacheListener<AudioHolder>() {
+            @Override
+            public void onDownloadSucceed(final AudioHolder holder, final File file) {
+                Run.onUiAsync(new Action() {
+                    @Override
+                    public void call() {
+                        // 主线程播放
+                        mAudioPlayer.trigger(holder, file.getAbsolutePath());
+                    }
+                });
+            }
+
+            @Override
+            public void onDownloadFailed(AudioHolder holder) {
+                Application.showToast(R.string.toast_download_error);
+            }
+        });
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mAudioPlayer.destroy();
+    }
+
+    private void onBottomPanelOpened() {
+        // 当底部面板或者软键盘打开时触发
+        if (mAppBarLayout != null)
+            mAppBarLayout.setExpanded(false, true);
     }
 
     @Override

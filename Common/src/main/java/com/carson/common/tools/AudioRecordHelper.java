@@ -37,7 +37,7 @@ public class AudioRecordHelper {
     // 打印日志使用
     private static final String TAG = AudioRecordHelper.class.getSimpleName();
     // 采样频率集合，用于适应不同手机情况
-    private static final int[] SAMPLE_RATES = new int[]{44100, 22050, 11025, 8000};
+    private static final int[] SAMPLE_RATES = new int[]{44100, 22050, 16000, 11025, 8000, 4000};
     // 状态回调
     private RecordCallback callback;
     // 缓存文件，无论那一个录音都复用同一个缓存文件

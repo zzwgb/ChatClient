@@ -20,7 +20,7 @@ public class AudioPlayHelper<Holder> implements MediaPlayer.OnErrorListener, Med
     // 系统的播放器
     private MediaPlayer mediaPlayer;
     // 全局的播放状态监听器，用于回调当前的播放状态
-    private RecordPlayListener<Holder> listener;
+    private AudioPlayListener<Holder> listener;
     // 范型的一个目标，当前播放的目标，可以是任意的类型
     private Holder holder;
     // 当前的播放地址
@@ -31,7 +31,7 @@ public class AudioPlayHelper<Holder> implements MediaPlayer.OnErrorListener, Med
      *
      * @param listener 传入一个监听器
      */
-    public AudioPlayHelper(RecordPlayListener<Holder> listener) {
+    public AudioPlayHelper(AudioPlayListener<Holder> listener) {
         this.listener = listener;
         // 进行播放器创建
         this.mediaPlayer = createNewMediaPlayer();
@@ -167,7 +167,7 @@ public class AudioPlayHelper<Holder> implements MediaPlayer.OnErrorListener, Med
      *
      * @param <Holder> 任意范型的目标Holder
      */
-    public interface RecordPlayListener<Holder> {
+    public interface AudioPlayListener<Holder> {
         /**
          * 当播放开始时
          *
